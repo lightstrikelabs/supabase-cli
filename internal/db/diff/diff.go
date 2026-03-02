@@ -66,6 +66,15 @@ func SaveDiff(out, file string, fsys afero.Fs) error {
 	return nil
 }
 
+// HasDeclaredSchemas returns true if the project uses declarative schema files.
+func HasDeclaredSchemas(fsys afero.Fs) bool {
+	if schemas := utils.Config.Db.Migrations.SchemaPaths; len(schemas) > 0 {
+		return true
+	}
+	exists, err := afero.DirExists(fsys, utils.SchemasDir)
+	return err == nil && exists
+}
+
 func loadDeclaredSchemas(fsys afero.Fs) ([]string, error) {
 	if schemas := utils.Config.Db.Migrations.SchemaPaths; len(schemas) > 0 {
 		return schemas.Files(afero.NewIOFS(fsys))

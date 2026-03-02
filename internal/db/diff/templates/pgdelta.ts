@@ -1,5 +1,5 @@
-import { createPlan } from "npm:@supabase/pg-delta@1.0.0-alpha.3";
-import { supabase } from "npm:@supabase/pg-delta@1.0.0-alpha.3/integrations/supabase";
+import { createPlan } from "npm:@supabase/pg-delta@1.0.0-alpha.4";
+import { supabase } from "npm:@supabase/pg-delta@1.0.0-alpha.4/integrations/supabase";
 
 const source = Deno.env.get("SOURCE");
 const target = Deno.env.get("TARGET");

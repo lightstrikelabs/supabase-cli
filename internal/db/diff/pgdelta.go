@@ -28,11 +28,9 @@ func DiffPgDelta(ctx context.Context, source, target pgconn.Config, schema []str
 		return "", err
 	} else if len(ca) > 0 {
 		target.RuntimeParams["sslmode"] = "require"
-		env = append(env,
-			"TARGET="+utils.ToPostgresURL(target),
-			"PGDELTA_TARGET_SSLROOTCERT="+ca,
-		)
+		env = append(env, "PGDELTA_TARGET_SSLROOTCERT="+ca)
 	}
+	env = append(env, "TARGET="+utils.ToPostgresURL(target))
 	if len(schema) > 0 {
 		env = append(env, "INCLUDED_SCHEMAS="+strings.Join(schema, ","))
 	}

@@ -99,6 +99,10 @@ var (
 				fmt.Fprintln(os.Stderr, utils.Yellow("WARNING:"), "--use-pg-schema flag is experimental and may not include all entities, such as views and grants.")
 			} else if usePgDelta {
 				differ = diff.DiffPgDelta
+			} else if !cmd.Flags().Changed("use-migra") && diff.HasDeclaredSchemas(afero.NewOsFs()) {
+				// Auto-select pg-delta for declarative schemas, as it handles
+				// procedural objects (functions, triggers, policies) more reliably.
+				differ = diff.DiffPgDelta
 			}
 			return diff.Run(cmd.Context(), schema, file, flags.DbConfig, differ, afero.NewOsFs())
 		},

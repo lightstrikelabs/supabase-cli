@@ -361,3 +361,16 @@ func TestLoadSchemas(t *testing.T) {
 	assert.NoError(t, err)
 	assert.ElementsMatch(t, expected, schemas)
 }
+
+func TestHasDeclaredSchemas(t *testing.T) {
+	t.Run("returns true when schemas directory exists", func(t *testing.T) {
+		fsys := afero.NewMemMapFs()
+		require.NoError(t, afero.WriteFile(fsys, filepath.Join(utils.SchemasDir, "model.sql"), nil, 0644))
+		assert.True(t, HasDeclaredSchemas(fsys))
+	})
+
+	t.Run("returns false when schemas directory does not exist", func(t *testing.T) {
+		fsys := afero.NewMemMapFs()
+		assert.False(t, HasDeclaredSchemas(fsys))
+	})
+}
